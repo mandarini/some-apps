@@ -1,22 +1,22 @@
 {
-  "name": "app1",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "app2",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "ngstory",
-  "sourceRoot": "apps/app1/src",
+  "sourceRoot": "app2/src",
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/app1",
-        "index": "apps/app1/src/index.html",
-        "browser": "apps/app1/src/main.ts",
+        "outputPath": "dist/app2",
+        "index": "app2/src/index.html",
+        "main": "app2/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/app1/tsconfig.app.json",
-        "assets": ["apps/app1/src/favicon.ico", "apps/app1/src/assets"],
-        "styles": ["apps/app1/src/styles.css"],
+        "tsConfig": "app2/tsconfig.app.json",
+        "assets": ["app2/src/favicon.ico", "app2/src/assets"],
+        "styles": ["app2/src/styles.css"],
         "scripts": []
       },
       "configurations": {
@@ -36,9 +36,12 @@
           "outputHashing": "all"
         },
         "development": {
+          "buildOptimizer": false,
           "optimization": false,
+          "vendorChunk": true,
           "extractLicenses": false,
-          "sourceMap": true
+          "sourceMap": true,
+          "namedChunks": true
         }
       },
       "defaultConfiguration": "production"
@@ -47,10 +50,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "app1:build:production"
+          "buildTarget": "app2:build:production"
         },
         "development": {
-          "buildTarget": "app1:build:development"
+          "buildTarget": "app2:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -58,36 +61,35 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "buildTarget": "app1:build"
+        "buildTarget": "app2:build"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/app1/**/*.ts", "apps/app1/**/*.html"]
+        "lintFilePatterns": ["app2/**/*.ts", "app2/**/*.html"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/app1/jest.config.ts"
+        "jestConfig": "app2/jest.config.ts"
       }
     },
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "app1:build",
-        "staticFilePath": "dist/apps/app1/browser"
+        "buildTarget": "app2:build"
       }
     },
     "storybook": {
       "executor": "@storybook/angular:start-storybook",
       "options": {
         "port": 4400,
-        "configDir": "apps/app1/.storybook",
-        "browserTarget": "app1:build-storybook",
+        "configDir": "app2/.storybook",
+        "browserTarget": "app2:build",
         "compodoc": false
       },
       "configurations": {
@@ -100,9 +102,9 @@
       "executor": "@storybook/angular:build-storybook",
       "outputs": ["{options.outputDir}"],
       "options": {
-        "outputDir": "dist/storybook/app1",
-        "configDir": "apps/app1/.storybook",
-        "browserTarget": "app1:build-storybook",
+        "outputDir": "dist/storybook/app2",
+        "configDir": "app2/.storybook",
+        "browserTarget": "app2:build",
         "compodoc": false
       },
       "configurations": {
@@ -114,18 +116,18 @@
     "test-storybook": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "test-storybook -c apps/app1/.storybook --url=http://localhost:4400"
+        "command": "test-storybook -c app2/.storybook --url=http://localhost:4400"
       }
     },
     "static-storybook": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "app1:build-storybook",
-        "staticFilePath": "dist/storybook/app1"
+        "buildTarget": "app2:build-storybook",
+        "staticFilePath": "dist/storybook/app2"
       },
       "configurations": {
         "ci": {
-          "buildTarget": "app1:build-storybook:ci"
+          "buildTarget": "app2:build-storybook:ci"
         }
       }
     }
