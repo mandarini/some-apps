@@ -1,0 +1,123 @@
+{
+  "name": "rapp1",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "rapp1/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/rapp1",
+        "index": "rapp1/src/index.html",
+        "baseHref": "/",
+        "main": "rapp1/src/main.tsx",
+        "tsConfig": "rapp1/tsconfig.app.json",
+        "assets": ["rapp1/src/favicon.ico", "rapp1/src/assets"],
+        "styles": ["rapp1/src/styles.css"],
+        "scripts": [],
+        "isolatedConfig": true,
+        "webpackConfig": "rapp1/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "rapp1/src/environments/environment.ts",
+              "with": "rapp1/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "rapp1:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "rapp1:build:development"
+        },
+        "production": {
+          "buildTarget": "rapp1:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["rapp1/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "rapp1/jest.config.ts"
+      }
+    },
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "rapp1/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/rapp1",
+        "configDir": "rapp1/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c rapp1/.storybook --url=http://localhost:4400"
+      }
+    },
+    "static-storybook": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "rapp1:build-storybook",
+        "staticFilePath": "dist/storybook/rapp1"
+      },
+      "configurations": {
+        "ci": {
+          "buildTarget": "rapp1:build-storybook:ci"
+        }
+      }
+    }
+  },
+  "tags": []
+}

@@ -40,6 +40,10 @@
         "{projectRoot}/.storybook/**/*",
         "{projectRoot}/tsconfig.storybook.json"
       ]
+    },
+    "@nx/vite:test": {
+      "cache": true,
+      "inputs": ["default", "^production"]
     }
   },
   "namedInputs": {
@@ -72,6 +76,21 @@
     },
     "@nx/angular:component": {
       "style": "css"
+    },
+    "@nx/react": {
+      "application": {
+        "style": "css",
+        "linter": "eslint",
+        "bundler": "webpack",
+        "babel": true
+      },
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
     }
   },
   "nxCloudAccessToken": "NGE4NDQ4OWYtZTg0MS00NjZkLTg3NWEtNTVlZTVlYWQwZTc4fHJlYWQtd3JpdGU=",

@@ -1,0 +1,33 @@
+{
+  "name": "rapp2-e2e",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "rapp2-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "rapp2-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "rapp2:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "rapp2:serve:production"
+        },
+        "ci": {
+          "devServerTarget": "rapp2:serve-static"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["rapp2-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "implicitDependencies": ["rapp2"],
+  "tags": []
+}
